@@ -9,3 +9,12 @@ set(CMAKE_CXX_STANDARD 17) # CMAKE_CXX_STANDARD = 17
 project(${PROJECT_NAME}) # 프로젝트 선언
 add_executable(${PROJECT_NAME} src/main.cpp) # 실행파일을 만들 때 컴파일할 파일
 
+include(Dependency.cmake) # Dependency.cmake 파일 불러오기
+
+# 우리 프로젝트에 include / lib 관련 옵션 추가
+target_include_directories(${PROJECT_NAME} PUBLIC ${DEP_INCLUDE_DIR}) # target(PROJECT_NAME) 을 컴파일 할 때 DEP_INCLUDE_DIR 이 필요하다.
+target_link_directories(${PROJECT_NAME} PUBLIC ${DEP_LIB_DIR}) # ./build/install/lib 디렉토리 링크
+target_link_libraries(${PROJECT_NAME} PUBLIC ${DEP_LIBS}) # 실제로 어떤 라이브러리를 사용할 것인지 지정
+
+# Dependency들이 먼저 build 될 수 있게 관계 설정
+add_dependencies(${PROJECT_NAME} ${DEP_LIST}) # 의존성 리스트 프로젝트를 먼저 컴파일하고 우리 프로젝트를 컴파일해라.
