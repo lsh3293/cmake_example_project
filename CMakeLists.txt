@@ -6,6 +6,11 @@ set(PROJECT_NAME cmake_project_example)
 # C++ 17 사용한다는 의미
 set(CMAKE_CXX_STANDARD 17) # CMAKE_CXX_STANDARD = 17
 
+# main.cpp 에서 사용할 환경 변수 설정
+set(WINDOW_NAME "Hello, OpenGL!")
+set(WINDOW_WIDTH 960)
+set(WINDOW_HEIGHT 540)
+
 project(${PROJECT_NAME}) # 프로젝트 선언
 add_executable(${PROJECT_NAME} src/main.cpp) # 실행파일을 만들 때 컴파일할 파일
 
@@ -18,3 +23,10 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${DEP_LIBS}) # 실제로 어떤 라
 
 # Dependency들이 먼저 build 될 수 있게 관계 설정
 add_dependencies(${PROJECT_NAME} ${DEP_LIST}) # 의존성 리스트 프로젝트를 먼저 컴파일하고 우리 프로젝트를 컴파일해라.
+
+# 환경 변수를 predefined macro로 프로젝트에 추가
+target_compile_definitions(${PROJECT_NAME} PUBLIC
+  WINDOW_NAME="${WINDOW_NAME}"
+  WINDOW_WIDTH=${WINDOW_WIDTH}
+  WINDOW_HEIGHT=${WINDOW_HEIGHT}
+)
